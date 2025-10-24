@@ -1,0 +1,32 @@
+# Flutter
+build/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+pubspec.lock
+android/.gradle/
+ios/Pods/
+ios/.symlinks/
+windows/
+linux/
+macos/
+web/.dart_tool/
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.env
+package-lock.json
+
+# System files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log
+
+# Other
+*.zip
