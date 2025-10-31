@@ -14,3 +14,6 @@ pertama proyek memiliki semua rerquirement, agar mudah belajar proyek dibuat den
 
 Setelah semua sudah berfungsi / di approve, proyek akan diupdate agar resemble sebuah applikasi.
 
+Current issues and TODO
+- app is not fetching all book files
+- Front ends not showing up properly, Most likely API implementation that grabs books from backend is messing up
