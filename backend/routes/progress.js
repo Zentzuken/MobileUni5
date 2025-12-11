@@ -1,32 +1,25 @@
-import express from "express";
-import fs from "fs-extra";
-
+const express = require('express');
 const router = express.Router();
-const DATA_FILE = "./backend/data/books.json";
+const Progress = require('../models/bookProgress');
 
-router.post("/", async (req, res) => {
-  const { id, chapter } = req.body;
+router.post("/", (req, res) => {
+  const { userId, bookId, lastChapter, lastPosition } = req.body;
 
-  if (!id || chapter === undefined) {
-    return res.status(400).json({ message: "Missing book ID or chapter" });
-  }
+  const updated = Progress.saveProgress(userId, bookId, {
+    lastChapter,
+    lastPosition,
+    timestamp: Date.now()
+  });
 
-  try {
-    const books = await fs.readJson(DATA_FILE);
-    const bookIndex = books.findIndex((b) => b.id === id);
-
-    if (bookIndex === -1) {
-      return res.status(404).json({ message: "Book not found" });
-    }
-
-    books[bookIndex].lastReadChapter = chapter;
-    await fs.writeJson(DATA_FILE, books, { spaces: 2 });
-
-    res.json({ message: "Progress updated successfully" });
-  } catch (err) {
-    console.error("Error updating progress:", err);
-    res.status(500).json({ message: "Failed to update progress" });
-  }
+  res.json(updated);
 });
 
-export default router;
+router.get("/:userId/:bookId", (req, res) => {
+  const { userId, bookId } = req.params;
+
+  const p = Progress.getProgress(userId, bookId);
+
+  res.json(p || {});
+});
+
+module.exports = router;
