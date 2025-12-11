@@ -1,20 +1,20 @@
-import express from 'express';
-import cors from 'cors';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import booksRouter from './routes/books.js';
+import express from "express";
+import cors from "cors";
+import bodyParser from "body-parser";
+import fs from "fs-extra";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import bookRoutes from "./routes/books.js";
+import progressRoutes from "./routes/progress.js";
 
 const app = express();
+const PORT = 3000;
+
 app.use(cors());
-app.use(express.json());
+app.use(bodyParser.json());
+app.use("/files", express.static("backend/files")); // serve epub files
+app.use("/api/books", bookRoutes);
+app.use("/api/progress", progressRoutes);
 
-app.use('/files', express.static(path.join(__dirname, 'files')));
-app.use('/api', booksRouter);
-
-app.get('/', (req, res) => res.send('Novel backend running'));
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+app.listen(PORT, () => {
+  console.log(`✅ Backend running on http://localhost:${PORT}`);
+});
